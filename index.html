@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Luxe Market</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', 'sans-serif'],
+                    },
+                    colors: {
+                        apple: {
+                            bg: '#f5f5f7',
+                            text: '#1d1d1f',
+                            muted: '#86868b',
+                            blue: '#0071e3',
+                            darkBg: '#000000',
+                            darkText: '#f5f5f7'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-apple-bg text-apple-text dark:bg-apple-darkBg dark:text-apple-darkText transition-colors duration-300 min-h-screen">
+
+    <nav class="fixed top-0 w-full z-50 glass border-b border-gray-200/30 dark:border-gray-800/50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center gap-4">
+                    <h1 class="text-xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-apple-blue to-blue-400" data-i18n="brand">Luxe Market</h1>
+                </div>
+                <div class="flex items-center gap-3">
+                    <button id="lang-toggle" class="text-sm font-medium hover:text-apple-blue transition">عربي</button>
+                    <button id="theme-toggle" class="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-800 transition">🌙</button>
+                    
+                    <div class="relative">
+                        <button id="cart-toggle" class="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-800 transition">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
+                            <span id="cart-badge" class="absolute -top-1 -right-1 rtl:-left-1 rtl:right-auto bg-red-500 text-white text-[10px] font-bold h-4 w-4 rounded-full flex items-center justify-center scale-0 transition-transform">0</span>
+                        </button>
+                    </div>
+
+                    <div id="auth-buttons" class="flex gap-2">
+                        <button id="btn-show-login" class="px-4 py-1.5 bg-apple-blue text-white rounded-full text-sm font-medium shadow-sm hover:bg-blue-600 transition" data-i18n="login">Connexion</button>
+                    </div>
+                    
+                    <div id="user-menu" class="hidden flex gap-3 items-center">
+                        <button id="btn-show-dashboard" class="text-sm font-medium hover:text-apple-blue transition" data-i18n="dashboard">Vendre</button>
+                        <button id="btn-logout" class="text-sm font-medium text-red-500 hover:text-red-600 transition" data-i18n="logout">Déconnexion</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="pt-24 pb-12 px-4 max-w-7xl mx-auto">
+        
+        <section id="hero-section" class="mb-16 pt-8 text-center fade-in">
+            <h1 class="text-4xl md:text-6xl font-extrabold mb-6 tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-apple-blue to-blue-400 rtl:bg-gradient-to-l" data-i18n="hero_title">
+                Lancez votre e-commerce aujourd'hui
+            </h1>
+            <p class="text-lg md:text-xl text-apple-muted mb-10 max-w-2xl mx-auto leading-relaxed" data-i18n="hero_subtitle">
+                Aucune expérience technique requise. Ouvrez votre boutique gratuitement, présentez vos produits au monde et réalisez vos premiers bénéfices.
+            </p>
+            <div class="flex flex-col sm:flex-row justify-center gap-4 mb-16">
+                <button id="btn-start-selling" class="bg-apple-blue text-white px-8 py-3.5 rounded-full font-bold shadow-lg shadow-blue-500/30 hover:shadow-xl hover:-translate-y-1 transition transform duration-300" data-i18n="start_selling">
+                    Commencer à vendre (Gratuit)
+                </button>
+                <button id="btn-browse" class="bg-white/50 dark:bg-black/50 border border-gray-200 dark:border-gray-700 text-apple-text dark:text-white px-8 py-3.5 rounded-full font-bold hover:bg-gray-100 dark:hover:bg-gray-800 transition" data-i18n="browse_products">
+                    Explorer les produits
+                </button>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-center max-w-4xl mx-auto">
+                <div class="glass p-8 rounded-3xl hover:-translate-y-2 transition duration-300 border border-gray-200/50 dark:border-gray-800/50">
+                    <div class="text-4xl mb-4">🚀</div>
+                    <h3 class="text-xl font-bold mb-2 dark:text-white" data-i18n="step1_title">Créez votre compte</h3>
+                    <p class="text-sm text-apple-muted" data-i18n="step1_desc">Une étape simple et totalement gratuite, sans frais cachés.</p>
+                </div>
+                <div class="glass p-8 rounded-3xl hover:-translate-y-2 transition duration-300 border border-gray-200/50 dark:border-gray-800/50">
+                    <div class="text-4xl mb-4">📸</div>
+                    <h3 class="text-xl font-bold mb-2 dark:text-white" data-i18n="step2_title">Ajoutez vos produits</h3>
+                    <p class="text-sm text-apple-muted" data-i18n="step2_desc">Prenez une photo, fixez votre prix et publiez instantanément.</p>
+                </div>
+                <div class="glass p-8 rounded-3xl hover:-translate-y-2 transition duration-300 border border-gray-200/50 dark:border-gray-800/50">
+                    <div class="text-4xl mb-4">💰</div>
+                    <h3 class="text-xl font-bold mb-2 dark:text-white" data-i18n="step3_title">Générez des revenus</h3>
+                    <p class="text-sm text-apple-muted" data-i18n="step3_desc">Atteignez des milliers d'acheteurs et augmentez vos revenus.</p>
+                </div>
+            </div>
+        </section>
+        
+        <section id="marketplace-section" class="fade-in">
+            <div class="mb-8 flex flex-col md:flex-row gap-4 items-center justify-between glass p-4 rounded-2xl border border-gray-200/50 dark:border-gray-800/50">
+                <div class="w-full md:w-1/3 relative">
+                    <input type="text" id="search-input" placeholder="Rechercher..." class="w-full bg-transparent border-none focus:ring-0 text-sm outline-none px-2" data-i18n-placeholder="search_placeholder">
+                </div>
+                <div class="flex gap-2 overflow-x-auto w-full md:w-auto pb-1 md:pb-0 hide-scroll">
+                    <button class="filter-btn bg-apple-blue text-white px-5 py-1.5 rounded-full text-sm font-medium transition whitespace-nowrap" data-category="All" data-i18n="cat_all">Tout</button>
+                    <button class="filter-btn hover:bg-gray-100 dark:hover:bg-gray-800 px-5 py-1.5 rounded-full text-sm font-medium transition whitespace-nowrap" data-category="Electronics" data-i18n="cat_elec">Électronique</button>
+                    <button class="filter-btn hover:bg-gray-100 dark:hover:bg-gray-800 px-5 py-1.5 rounded-full text-sm font-medium transition whitespace-nowrap" data-category="Fashion" data-i18n="cat_fash">Mode</button>
+                </div>
+            </div>
+
+            <h2 class="text-2xl font-bold mb-6" data-i18n="latest_products">Derniers Produits</h2>
+            <div id="products-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                </div>
+        </section>
+
+        <section id="dashboard-section" class="hidden fade-in max-w-2xl mx-auto mt-8">
+            <div class="glass p-8 rounded-3xl border border-gray-200/50 dark:border-gray-800/50 shadow-sm">
+                <h2 class="text-2xl font-bold mb-6" data-i18n="add_product">Ajouter un produit</h2>
+                <form id="add-product-form" class="space-y-5">
+                    <input type="text" id="prod-title" required class="input-field" placeholder="Titre du produit">
+                    <div class="grid grid-cols-2 gap-4">
+                        <input type="number" id="prod-price" required min="1" step="0.01" class="input-field" placeholder="Prix ($)">
+                        <select id="prod-category" class="input-field cursor-pointer">
+                            <option value="Electronics">Electronics / إلكترونيات</option>
+                            <option value="Fashion">Fashion / موضة</option>
+                        </select>
+                    </div>
+                    <input type="file" id="prod-image" required accept="image/png, image/jpeg, image/webp" class="w-full text-sm text-apple-muted file:mr-4 file:py-2.5 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-apple-blue/10 file:text-apple-blue hover:file:bg-apple-blue/20 transition cursor-pointer">
+                    <button type="submit" id="btn-submit-product" class="w-full bg-apple-text dark:bg-white text-white dark:text-black py-3.5 rounded-xl font-bold hover:opacity-90 transition shadow-md" data-i18n="publish">Publier</button>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <div id="cart-overlay" class="fixed inset-0 bg-black/40 backdrop-blur-sm z-[60] hidden opacity-0 transition-opacity duration-300"></div>
+    <div id="cart-drawer" class="fixed top-0 right-0 rtl:left-0 rtl:right-auto h-full w-full max-w-sm glass z-[70] transform translate-x-full rtl:-translate-x-full transition-transform duration-500 ease-in-out flex flex-col border-l rtl:border-r border-gray-200/20 dark:border-gray-700/50">
+        <div class="p-6 border-b border-gray-200/20 dark:border-gray-700/50 flex justify-between items-center">
+            <h2 class="text-xl font-bold" data-i18n="cart_title">Mon Panier</h2>
+            <button id="close-cart" class="p-2 hover:bg-gray-200 dark:hover:bg-gray-800 rounded-full transition">✕</button>
+        </div>
+        <div id="cart-items" class="flex-grow overflow-y-auto p-6 space-y-4"></div>
+        <div class="p-6 border-t border-gray-200/20 dark:border-gray-700/50 bg-white/40 dark:bg-black/40">
+            <div class="flex justify-between mb-4 font-bold text-xl">
+                <span data-i18n="total">Total</span>
+                <span id="cart-total" class="text-apple-blue">$0.00</span>
+            </div>
+            <button class="w-full bg-apple-text dark:bg-white text-white dark:text-black py-3.5 rounded-xl font-bold hover:opacity-80 transition shadow-lg" data-i18n="checkout">Payer</button>
+        </div>
+    </div>
+
+    <div id="auth-modal" class="fixed inset-0 z-[100] hidden items-center justify-center bg-black/60 backdrop-blur-md">
+        <div class="glass w-full max-w-md p-8 rounded-3xl relative animate-scale-up border border-white/20">
+            <button id="close-modal" class="absolute top-4 right-4 rtl:left-4 rtl:right-auto p-2 text-gray-500 hover:text-black dark:hover:text-white transition">✕</button>
+            <h2 class="text-2xl font-bold text-center mb-6" id="auth-title">Bienvenue</h2>
+            <form id="auth-form" class="space-y-4">
+                <input type="email" id="auth-email" required placeholder="Email" class="input-field">
+                <input type="password" id="auth-password" required placeholder="Mot de passe" class="input-field">
+                <button type="submit" id="btn-auth-action" class="w-full bg-apple-blue text-white py-3 rounded-xl font-bold hover:bg-blue-600 transition shadow-md">Connexion</button>
+            </form>
+            <p class="text-center mt-5 text-sm cursor-pointer text-apple-muted hover:text-apple-blue transition" id="toggle-auth-mode">Créer un compte</p>
+        </div>
+    </div>
+
+    <script type="module" src="app.js"></script>
+</body>
+</html>
