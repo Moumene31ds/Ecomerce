@@ -1,16 +1,16 @@
-// حذفنا استدعاءات Firebase Storage لعدم حاجتنا إليها الآن
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
 import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, serverTimestamp, doc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
+// --- إعدادات مشروعك في Firebase ---
 const firebaseConfig = {
-  apiKey: "AIzaSyABI1Q92r_gzgTSd_7nTUz602aX6MafGzw",
-  authDomain: "ecommerce-92c76.firebaseapp.com",
-  projectId: "ecommerce-92c76",
-  storageBucket: "ecommerce-92c76.firebasestorage.app",
-  messagingSenderId: "650078282327",
-  appId: "1:650078282327:web:e5b9b6c76e174eba0d7912",
-  measurementId: "G-CY6B8SJZQY"
+    apiKey: "AIzaSyABI1Q92r_gzgTSd_7nTUz602aX6MafGzw",
+    authDomain: "ecommerce-92c76.firebaseapp.com",
+    projectId: "ecommerce-92c76",
+    storageBucket: "ecommerce-92c76.firebasestorage.app",
+    messagingSenderId: "650078282327",
+    appId: "1:650078282327:web:e5b9b6c76e174eba0d7912",
+    measurementId: "G-CY6B8SJZQY"
 };
 
 const app = initializeApp(firebaseConfig);
@@ -240,7 +240,7 @@ document.getElementById('add-product-form').addEventListener('submit', async (e)
     btn.innerText = translations[currentLang].uploading;
 
     try {
-        // ⚠️ استبدل هذا المفتاح بمفتاح ImgBB الخاص بك من موقع api.imgbb.com
+        // ⚠️ هام جداً: ضع المفتاح الخاص بك هنا
         const imgbbApiKey = 'be52b14b12e7aecda0d13166c49fb66e'; 
         
         const formData = new FormData();
@@ -255,13 +255,13 @@ document.getElementById('add-product-form').addEventListener('submit', async (e)
         
         if (!imgbbData.success) throw new Error(translations[currentLang].img_error);
 
-        const imageUrl = imgbbData.data.url; // رابط الصورة المجاني
+        const imageUrl = imgbbData.data.url; 
         
         await addDoc(collection(db, "products"), {
             title: escapeHTML(document.getElementById('prod-title').value),
             price: Number(document.getElementById('prod-price').value),
             category: document.getElementById('prod-category').value,
-            imageUrl: imageUrl, // تم التخزين بنجاح
+            imageUrl: imageUrl, 
             vendorId: currentUser.uid,
             createdAt: serverTimestamp()
         });
@@ -399,6 +399,11 @@ const toggleCart = () => {
 
 document.getElementById('cart-toggle').addEventListener('click', toggleCart);
 document.getElementById('close-cart').addEventListener('click', toggleCart);
+document.getElementById('cart-overlay').addEventListener('click', toggleCart);
+
+// Init
+updateLanguage();
+updateCartUI(); toggleCart);
 document.getElementById('cart-overlay').addEventListener('click', toggleCart);
 
 // Init
