@@ -1,182 +1,703 @@
 <!DOCTYPE html>
-<html lang="fr" dir="ltr">
+<html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Luxe Market</title>
+    <title>سوق التجار برو | منصة زجاجية متكاملة</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🛍️</text></svg>">
     <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    fontFamily: { sans: ['-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', 'sans-serif'] },
-                    colors: {
-                        apple: { bg: '#f5f5f7', text: '#1d1d1f', muted: '#86868b', blue: '#0071e3', darkBg: '#000000', darkText: '#f5f5f7' }
-                    }
-                }
-            }
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&display=swap');
+        
+        body { 
+            font-family: 'Tajawal', sans-serif; 
+            /* خلفية متحركة تعطي جمالية للتصميم الزجاجي */
+            background: linear-gradient(-45deg, #0f172a, #312e81, #581c87, #1e1b4b);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            color: #f8fafc;
+            min-height: 100vh;
         }
-    </script>
-    <link rel="stylesheet" href="style.css">
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* فئات التصميم الزجاجي */
+        .glass {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.4);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        }
+
+        .glass-input {
+            background: rgba(0, 0, 0, 0.2) !important;
+            border: 1px solid rgba(255, 255, 255, 0.1) !important;
+            color: white !important;
+            transition: all 0.3s ease;
+        }
+        .glass-input::placeholder { color: rgba(255, 255, 255, 0.5); }
+        .glass-input:focus { 
+            outline: none; 
+            border-color: rgba(167, 139, 250, 0.5) !important; 
+            background: rgba(0, 0, 0, 0.4) !important;
+            box-shadow: 0 0 15px rgba(167, 139, 250, 0.2);
+        }
+        
+        /* تلوين الخيارات داخل القوائم المنسدلة لتكون مقروءة */
+        option { background-color: #1e293b; color: white; }
+
+        .glass-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .glass-btn:hover { 
+            background: rgba(255, 255, 255, 0.2); 
+            transform: translateY(-2px); 
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .glass-btn-primary {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.8), rgba(168, 85, 247, 0.8));
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        .glass-btn-primary:hover {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 1), rgba(168, 85, 247, 1));
+            box-shadow: 0 0 20px rgba(168, 85, 247, 0.4);
+        }
+
+        .hidden-section { display: none !important; }
+        
+        /* تصميم الإشعارات (Toasts) */
+        #toast-container { position: fixed; bottom: 20px; right: 20px; z-index: 50; display: flex; flex-direction: column; gap: 10px; }
+        .toast { padding: 16px 24px; border-radius: 12px; color: white; opacity: 0; transform: translateY(20px); transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.2); }
+        .toast.show { opacity: 1; transform: translateY(0); }
+        .toast-success { background: rgba(16, 185, 129, 0.8); }
+        .toast-error { background: rgba(239, 68, 68, 0.8); }
+        .toast-info { background: rgba(59, 130, 246, 0.8); }
+        
+        /* تأثير النبض للقلب (المفضلة) */
+        .heart-active { color: #ef4444; fill: #ef4444; animation: heartPulse 0.3s ease; }
+        @keyframes heartPulse { 0% { transform: scale(1); } 50% { transform: scale(1.3); } 100% { transform: scale(1); } }
+    </style>
 </head>
-<body class="bg-apple-bg text-apple-text dark:bg-apple-darkBg dark:text-apple-darkText transition-colors duration-300 min-h-screen pb-20">
+<body class="antialiased">
 
-    <nav class="fixed top-0 w-full z-50 glass border-b border-gray-200/30 dark:border-gray-800/50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center h-16">
-                <div class="flex items-center gap-4 cursor-pointer" id="logo-btn">
-                    <h1 class="text-xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-apple-blue to-blue-400" data-i18n="brand">Luxe Market</h1>
-                </div>
-                <div class="flex items-center gap-3">
-                    <button id="lang-toggle" class="text-sm font-medium hover:text-apple-blue transition">عربي</button>
-                    <button id="theme-toggle" class="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-800 transition">🌙</button>
-                    
-                    <div class="relative">
-                        <button id="cart-toggle" class="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-800 transition">
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
-                            <span id="cart-badge" class="absolute -top-1 -right-1 rtl:-left-1 rtl:right-auto bg-red-500 text-white text-[10px] font-bold h-4 w-4 rounded-full flex items-center justify-center scale-0 transition-transform">0</span>
-                        </button>
-                    </div>
+    <div id="toast-container"></div>
 
-                    <div id="auth-buttons" class="flex gap-2">
-                        <button id="btn-show-login" class="px-4 py-1.5 bg-apple-blue text-white rounded-full text-sm font-medium shadow-sm hover:bg-blue-600 transition" data-i18n="login">Connexion</button>
-                    </div>
-                    
-                    <div id="user-menu" class="hidden flex gap-3 items-center">
-                        <button id="btn-show-dashboard" class="text-sm font-medium hover:text-apple-blue transition" data-i18n="dashboard">Vendre</button>
-                        <button id="btn-logout" class="text-sm font-medium text-red-500 hover:text-red-600 transition" data-i18n="logout">Déconnexion</button>
-                    </div>
+    <div id="edit-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm hidden justify-center items-center z-40 hidden-section flex">
+        <div class="glass-panel p-8 rounded-2xl w-full max-w-md mx-4">
+            <h3 class="text-2xl font-bold mb-6 text-white text-center">تعديل المنتج</h3>
+            <form id="edit-product-form" class="space-y-5">
+                <input type="hidden" id="edit-prod-id">
+                <input type="text" id="edit-prod-name" required class="w-full glass-input rounded-xl px-4 py-3" placeholder="اسم المنتج">
+                <textarea id="edit-prod-desc" required class="w-full glass-input rounded-xl px-4 py-3" placeholder="الوصف"></textarea>
+                <input type="number" id="edit-prod-price" required class="w-full glass-input rounded-xl px-4 py-3" placeholder="السعر">
+                <select id="edit-prod-category" class="w-full glass-input rounded-xl px-4 py-3">
+                    <option value="إلكترونيات">إلكترونيات</option>
+                    <option value="ملابس">ملابس</option>
+                    <option value="أخرى">أخرى</option>
+                </select>
+                <input type="url" id="edit-prod-image" required class="w-full glass-input rounded-xl px-4 py-3" placeholder="رابط الصورة">
+                <div class="flex gap-3 pt-2">
+                    <button type="submit" class="flex-1 glass-btn-primary text-white py-3 rounded-xl font-bold">حفظ التعديلات</button>
+                    <button type="button" onclick="closeEditModal()" class="flex-1 glass-btn text-white py-3 rounded-xl">إلغاء</button>
                 </div>
-            </div>
+            </form>
+        </div>
+    </div>
+
+    <nav class="glass sticky top-0 z-30 border-b border-white/10">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <h1 class="text-2xl font-black cursor-pointer flex items-center gap-2 text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-indigo-300" onclick="showSection('storefront-section')">
+                <svg class="w-7 h-7 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                سوق التجار برو
+            </h1>
+            <ul class="flex space-x-4 space-x-reverse font-medium items-center">
+                <li><button onclick="showSection('storefront-section')" class="hover:text-purple-300 transition px-2">المتجر</button></li>
+                <li><button onclick="showSection('cart-section')" class="hover:text-purple-300 transition flex items-center gap-1 glass px-4 py-1.5 rounded-full">
+                    السلة <span id="cart-count" class="bg-purple-500 text-white text-xs px-2 py-0.5 rounded-full ml-1">0</span>
+                </button></li>
+                <li id="nav-dashboard" class="hidden"><button onclick="showSection('dashboard-section')" class="hover:text-purple-300 transition px-2">لوحة التحكم</button></li>
+                <li id="nav-login"><button onclick="showSection('auth-section')" class="glass-btn-primary px-5 py-2 rounded-xl transition">دخول التاجر</button></li>
+                <li id="nav-logout" class="hidden"><button id="logout-btn" class="text-red-300 hover:text-red-100 transition px-2">خروج</button></li>
+            </ul>
         </div>
     </nav>
 
-    <main class="pt-24 px-4 max-w-7xl mx-auto">
-        <section id="hero-section" class="mb-16 pt-8 text-center fade-in">
-            <h1 class="text-4xl md:text-6xl font-extrabold mb-6 tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-apple-blue to-blue-400 rtl:bg-gradient-to-l" data-i18n="hero_title">Lancez votre e-commerce aujourd'hui</h1>
-            <p class="text-lg md:text-xl text-apple-muted mb-10 max-w-2xl mx-auto leading-relaxed" data-i18n="hero_subtitle">Aucune expérience technique requise. Ouvrez votre boutique gratuitement.</p>
-            <div class="flex flex-col sm:flex-row justify-center gap-4 mb-16">
-                <button id="btn-start-selling" class="bg-apple-blue text-white px-8 py-3.5 rounded-full font-bold shadow-lg shadow-blue-500/30 hover:-translate-y-1 transition transform" data-i18n="start_selling">Commencer à vendre</button>
-                <button id="btn-browse" class="bg-white/50 dark:bg-black/50 border border-gray-200 dark:border-gray-700 text-apple-text dark:text-white px-8 py-3.5 rounded-full font-bold hover:bg-gray-100 dark:hover:bg-gray-800 transition" data-i18n="browse_products">Explorer</button>
-            </div>
-        </section>
-        
-        <section id="marketplace-section" class="fade-in">
-            <div class="mb-8 flex flex-col md:flex-row gap-4 items-center justify-between glass p-4 rounded-2xl border border-gray-200/50 dark:border-gray-800/50">
-                <div class="w-full md:w-1/3 relative">
-                    <input type="text" id="search-input" placeholder="Rechercher..." class="w-full bg-transparent border-none focus:ring-0 text-sm outline-none px-2" data-i18n-placeholder="search_placeholder">
+    <main class="container mx-auto px-4 py-10">
+
+        <section id="storefront-section" class="spa-section">
+            <div class="glass-panel p-6 rounded-2xl mb-10 flex flex-col md:flex-row justify-between items-center gap-4">
+                <h2 class="text-3xl font-bold text-white">تصفح المنتجات</h2>
+                <div class="flex flex-wrap w-full md:w-auto gap-3">
+                    <select id="sort-filter" class="glass-input rounded-xl px-4 py-2 text-sm">
+                        <option value="default">الترتيب الافتراضي</option>
+                        <option value="price-asc">الأقل سعراً</option>
+                        <option value="price-desc">الأعلى سعراً</option>
+                    </select>
+                    <select id="category-filter" class="glass-input rounded-xl px-4 py-2 text-sm">
+                        <option value="الكل">جميع التصنيفات</option>
+                        <option value="إلكترونيات">إلكترونيات</option>
+                        <option value="ملابس">ملابس</option>
+                        <option value="أخرى">أخرى</option>
+                    </select>
+                    <div class="relative w-full md:w-64">
+                        <input type="text" id="search-input" placeholder="ابحث عن منتج..." class="glass-input rounded-xl px-4 py-2 w-full pr-10">
+                        <svg class="w-5 h-5 absolute right-3 top-2.5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                    </div>
                 </div>
-                <div class="flex gap-2 overflow-x-auto w-full md:w-auto pb-1 md:pb-0 hide-scroll">
-                    <button class="filter-btn bg-apple-blue text-white px-5 py-1.5 rounded-full text-sm font-medium transition whitespace-nowrap" data-category="All" data-i18n="cat_all">Tout</button>
-                    <button class="filter-btn hover:bg-gray-100 dark:hover:bg-gray-800 px-5 py-1.5 rounded-full text-sm font-medium transition whitespace-nowrap" data-category="Electronics" data-i18n="cat_elec">Électronique</button>
-                    <button class="filter-btn hover:bg-gray-100 dark:hover:bg-gray-800 px-5 py-1.5 rounded-full text-sm font-medium transition whitespace-nowrap" data-category="Fashion" data-i18n="cat_fash">Mode</button>
-                </div>
             </div>
-            <h2 class="text-2xl font-bold mb-6" data-i18n="latest_products">Derniers Produits</h2>
-            <div id="products-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"></div>
+            
+            <div id="products-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+                </div>
         </section>
 
-        <section id="dashboard-section" class="hidden fade-in max-w-4xl mx-auto mt-8">
-            <div class="glass p-6 md:p-8 rounded-3xl border border-gray-200/50 dark:border-gray-800/50 shadow-sm">
-                <h2 class="text-3xl font-bold mb-6" data-i18n="dashboard_title">Espace Vendeur</h2>
+        <section id="cart-section" class="spa-section hidden-section max-w-4xl mx-auto">
+            <h2 class="text-4xl font-black mb-8 text-center text-transparent bg-clip-text bg-gradient-to-r from-purple-200 to-indigo-100">سلة المشتريات</h2>
+            <div class="glass-panel p-8 rounded-3xl">
+                <div id="cart-items" class="divide-y divide-white/10 mb-8 max-h-[50vh] overflow-y-auto pr-2 custom-scrollbar">
+                    </div>
+                <div class="flex flex-col md:flex-row justify-between items-center border-t border-white/10 pt-8 gap-6">
+                    <div>
+                        <p class="text-indigo-200 text-sm mb-1">المجموع الكلي</p>
+                        <span class="text-4xl font-black text-white"><span id="cart-total">0</span> $</span>
+                    </div>
+                    <button id="checkout-btn" class="glass-btn-primary text-white px-10 py-4 rounded-xl font-bold text-lg shadow-[0_0_15px_rgba(168,85,247,0.5)]">إتمام الطلب الآن</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="auth-section" class="spa-section hidden-section max-w-md mx-auto mt-12">
+            <div class="glass-panel p-10 rounded-3xl relative overflow-hidden">
+                <div class="absolute -top-20 -right-20 w-40 h-40 bg-purple-500 rounded-full mix-blend-multiply filter blur-3xl opacity-50"></div>
                 
-                <div class="flex bg-white/50 dark:bg-black/50 p-1 rounded-xl mb-8 border border-gray-200/50 dark:border-gray-700/50">
-                    <button class="tab-btn active flex-1 py-2 text-sm font-bold bg-white dark:bg-[#1c1c1e] rounded-lg shadow-sm" data-target="tab-overview" data-i18n="tab_overview">Aperçu</button>
-                    <button class="tab-btn flex-1 py-2 text-sm font-bold text-apple-muted hover:text-apple-text dark:hover:text-white transition rounded-lg" data-target="tab-add" data-i18n="tab_add">Ajouter</button>
-                    <button class="tab-btn flex-1 py-2 text-sm font-bold text-apple-muted hover:text-apple-text dark:hover:text-white transition rounded-lg" data-target="tab-products" data-i18n="tab_my_products">Mes Produits</button>
+                <h2 id="auth-title" class="text-3xl font-black mb-8 text-center text-white relative z-10">بوابة التجار</h2>
+                
+                <form id="auth-form" class="space-y-5 relative z-10">
+                    <div>
+                        <label class="block mb-2 text-sm text-indigo-200 font-medium">البريد الإلكتروني</label>
+                        <input type="email" id="auth-email" required class="w-full glass-input rounded-xl px-4 py-3">
+                    </div>
+                    <div>
+                        <label class="block mb-2 text-sm text-indigo-200 font-medium">كلمة المرور</label>
+                        <input type="password" id="auth-password" required class="w-full glass-input rounded-xl px-4 py-3">
+                    </div>
+                    <button type="submit" id="auth-submit" class="w-full glass-btn-primary text-white py-3.5 rounded-xl font-bold text-lg mt-2">دخول</button>
+                </form>
+
+                <div class="relative flex items-center py-6 z-10">
+                    <div class="flex-grow border-t border-white/20"></div>
+                    <span class="flex-shrink-0 mx-4 text-white/50 text-sm">أو</span>
+                    <div class="flex-grow border-t border-white/20"></div>
                 </div>
 
-                <div id="tab-overview" class="tab-content">
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                        <div class="bg-white/60 dark:bg-white/5 p-6 rounded-2xl border border-gray-200/50 dark:border-gray-700/50">
-                            <p class="text-apple-muted text-sm font-medium mb-1" data-i18n="stat_total_products">Total Produits</p>
-                            <h3 class="text-4xl font-extrabold text-apple-blue" id="stat-count">0</h3>
-                        </div>
-                        <div class="bg-white/60 dark:bg-white/5 p-6 rounded-2xl border border-gray-200/50 dark:border-gray-700/50">
-                            <p class="text-apple-muted text-sm font-medium mb-1" data-i18n="stat_total_value">Valeur Totale</p>
-                            <h3 class="text-4xl font-extrabold text-green-500" id="stat-value">$0.00</h3>
+                <button id="google-auth-btn" class="w-full glass-btn text-white py-3 rounded-xl font-bold flex items-center justify-center gap-3 relative z-10">
+                    <svg class="w-5 h-5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+                        <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+                        <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
+                        <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+                    </svg>
+                    المتابعة باستخدام Google
+                </button>
+
+                <div class="mt-6 text-center z-10 relative">
+                    <button id="toggle-auth-mode" class="text-sm text-indigo-300 hover:text-white font-medium transition">ليس لديك حساب؟ سجل كتاجر جديد</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="dashboard-section" class="spa-section hidden-section">
+            <div class="glass-panel p-8 rounded-3xl mb-8 flex justify-between items-center">
+                <div>
+                    <h2 class="text-3xl font-black text-white mb-2">لوحة تحكم التاجر</h2>
+                    <p class="text-indigo-200">إدارة أعمالك، منتجاتك، ومتابعة مبيعاتك لحظة بلحظة</p>
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <div class="lg:col-span-1 space-y-8">
+                    <div class="glass-panel p-6 rounded-2xl">
+                        <h3 class="text-xl font-bold mb-6 text-white border-b border-white/10 pb-3 flex items-center gap-2">
+                            <svg class="w-6 h-6 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                            إضافة منتج جديد
+                        </h3>
+                        <form id="add-product-form" class="space-y-4">
+                            <input type="text" id="prod-name" placeholder="اسم المنتج" required class="w-full glass-input rounded-xl px-4 py-3">
+                            <select id="prod-category" required class="w-full glass-input rounded-xl px-4 py-3">
+                                <option value="" disabled selected>اختر التصنيف</option>
+                                <option value="إلكترونيات">إلكترونيات</option>
+                                <option value="ملابس">ملابس</option>
+                                <option value="أخرى">أخرى</option>
+                            </select>
+                            <textarea id="prod-desc" placeholder="وصف المنتج" required class="w-full glass-input rounded-xl px-4 py-3" rows="3"></textarea>
+                            <input type="number" id="prod-price" placeholder="السعر ($)" required class="w-full glass-input rounded-xl px-4 py-3">
+                            <input type="url" id="prod-image" placeholder="رابط الصورة (URL)" required class="w-full glass-input rounded-xl px-4 py-3">
+                            <button type="submit" id="add-btn-spinner" class="w-full glass-btn-primary text-white py-3 rounded-xl font-bold mt-2">إضافة المنتج</button>
+                        </form>
+                    </div>
+
+                    <div class="glass-panel p-6 rounded-2xl">
+                        <h3 class="text-xl font-bold mb-4 text-white border-b border-white/10 pb-3">منتجاتي الحالية</h3>
+                        <div class="overflow-y-auto max-h-80 pr-2 custom-scrollbar">
+                            <ul id="merchant-products-list" class="divide-y divide-white/10">
+                            </ul>
                         </div>
                     </div>
                 </div>
 
-                <div id="tab-add" class="tab-content hidden">
-                    <form id="add-product-form" class="space-y-5">
-                        <input type="text" id="prod-title" required class="input-field" placeholder="Titre du produit">
-                        <div class="grid grid-cols-2 gap-4">
-                            <input type="number" id="prod-price" required min="1" step="0.01" class="input-field" placeholder="Prix ($)">
-                            <select id="prod-category" class="input-field cursor-pointer">
-                                <option value="Electronics">Electronics / إلكترونيات</option>
-                                <option value="Fashion">Fashion / موضة</option>
-                            </select>
+                <div class="lg:col-span-2">
+                    <div class="glass-panel p-6 rounded-2xl h-full">
+                        <h3 class="text-2xl font-bold mb-6 text-white border-b border-white/10 pb-3 flex items-center gap-2">
+                            <svg class="w-6 h-6 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
+                            الطلبات الواردة
+                        </h3>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-right text-white">
+                                <thead>
+                                    <tr class="text-indigo-200 text-sm border-b border-white/20">
+                                        <th class="p-4 font-medium">العميل / ID</th>
+                                        <th class="p-4 font-medium">المنتج</th>
+                                        <th class="p-4 font-medium">المبلغ</th>
+                                        <th class="p-4 font-medium">التاريخ</th>
+                                        <th class="p-4 font-medium">الحالة</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="merchant-orders-list" class="text-sm divide-y divide-white/5">
+                                </tbody>
+                            </table>
                         </div>
-                        <input type="file" id="prod-image" required accept="image/png, image/jpeg, image/webp" class="w-full text-sm text-apple-muted file:mr-4 file:py-2.5 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-apple-blue/10 file:text-apple-blue cursor-pointer transition">
-                        <button type="submit" id="btn-submit-product" class="w-full bg-apple-text dark:bg-white text-white dark:text-black py-3.5 rounded-xl font-bold hover:opacity-90 transition shadow-md" data-i18n="publish">Publier</button>
-                    </form>
-                </div>
-
-                <div id="tab-products" class="tab-content hidden">
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-left border-collapse">
-                            <thead>
-                                <tr class="border-b border-gray-200 dark:border-gray-700 text-sm text-apple-muted">
-                                    <th class="pb-3 font-medium" data-i18n="col_image">Image</th>
-                                    <th class="pb-3 font-medium" data-i18n="col_title">Titre</th>
-                                    <th class="pb-3 font-medium" data-i18n="col_price">Prix</th>
-                                    <th class="pb-3 font-medium" data-i18n="col_action">Action</th>
-                                </tr>
-                            </thead>
-                            <tbody id="vendor-products-list" class="divide-y divide-gray-200/50 dark:divide-gray-700/50"></tbody>
-                        </table>
-                        <p id="no-vendor-products" class="text-center text-apple-muted py-6 hidden" data-i18n="no_products">Aucun produit trouvé.</p>
                     </div>
                 </div>
             </div>
         </section>
     </main>
 
-    <div id="cart-overlay" class="fixed inset-0 bg-black/40 backdrop-blur-sm z-[60] hidden opacity-0 transition-opacity duration-300"></div>
-    <div id="cart-drawer" class="fixed top-0 right-0 rtl:left-0 rtl:right-auto h-full w-full max-w-sm glass z-[70] transform translate-x-full rtl:-translate-x-full transition-transform duration-500 ease-in-out flex flex-col border-l rtl:border-r border-gray-200/20 dark:border-gray-700/50">
-        <div class="p-6 border-b border-gray-200/20 dark:border-gray-700/50 flex justify-between items-center">
-            <h2 class="text-xl font-bold" data-i18n="cart_title">Mon Panier</h2>
-            <button id="close-cart" class="p-2 hover:bg-gray-200 dark:hover:bg-gray-800 rounded-full transition">✕</button>
-        </div>
-        <div id="cart-items" class="flex-grow overflow-y-auto p-6 space-y-4"></div>
-        <div class="p-6 border-t border-gray-200/20 dark:border-gray-700/50 bg-white/40 dark:bg-black/40">
-            <div class="flex justify-between mb-4 font-bold text-xl">
-                <span data-i18n="total">Total</span>
-                <span id="cart-total" class="text-apple-blue">$0.00</span>
-            </div>
-            <button class="w-full bg-apple-text dark:bg-white text-white dark:text-black py-3.5 rounded-xl font-bold hover:opacity-80 transition shadow-lg" data-i18n="checkout">Payer</button>
-        </div>
-    </div>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+        import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, updateDoc, query, where, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
-    <div id="auth-modal" class="fixed inset-0 z-[100] hidden items-center justify-center bg-black/60 backdrop-blur-md">
-        <div class="glass w-full max-w-md p-8 rounded-3xl relative animate-scale-up border border-white/20">
-            <button id="close-modal" class="absolute top-4 right-4 rtl:left-4 rtl:right-auto p-2 text-gray-500 hover:text-black dark:hover:text-white transition">✕</button>
-            <h2 class="text-2xl font-bold text-center mb-6" id="auth-title">Bienvenue</h2>
-            <form id="auth-form" class="space-y-4">
-                <input type="email" id="auth-email" required placeholder="Email" class="input-field">
-                <input type="password" id="auth-password" required placeholder="Mot de passe" class="input-field">
-                <button type="submit" id="btn-auth-action" class="w-full bg-apple-blue text-white py-3 rounded-xl font-bold hover:bg-blue-600 transition shadow-md">Connexion</button>
-            </form>
+        const firebaseConfig = {
+            apiKey: "AIzaSyABI1Q92r_gzgTSd_7nTUz602aX6MafGzw",
+            authDomain: "ecommerce-92c76.firebaseapp.com",
+            projectId: "ecommerce-92c76",
+            storageBucket: "ecommerce-92c76.firebasestorage.app",
+            messagingSenderId: "650078282327",
+            appId: "1:650078282327:web:e5b9b6c76e174eba0d7912",
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        const googleProvider = new GoogleAuthProvider();
+
+        let currentUser = null;
+        let isLoginMode = true;
+        let allProductsCache = []; 
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+        let wishlist = JSON.parse(localStorage.getItem('wishlist')) || []; // ميزة المفضلة
+
+        // --- الإشعارات ---
+        window.showToast = (message, type = 'success') => {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = `toast toast-${type}`;
+            toast.innerText = message;
+            container.appendChild(toast);
             
-            <div class="relative my-5">
-                <div class="absolute inset-0 flex items-center"><div class="w-full border-t border-gray-200 dark:border-gray-700"></div></div>
-                <div class="relative flex justify-center text-sm">
-                    <span class="px-4 bg-white/80 dark:bg-[#1c1c1e]/80 text-apple-muted rounded-full backdrop-blur-md" data-i18n="or">Ou</span>
-                </div>
-            </div>
-            <button id="btn-google-auth" class="w-full flex items-center justify-center gap-3 bg-white dark:bg-black border border-gray-200 dark:border-gray-700 text-apple-text dark:text-white py-3 rounded-xl font-bold hover:bg-gray-50 dark:hover:bg-gray-900 transition shadow-sm">
-                <svg class="w-5 h-5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
-                <span data-i18n="google_login">Continuer avec Google</span>
-            </button>
-            <p class="text-center mt-5 text-sm cursor-pointer text-apple-muted hover:text-apple-blue transition" id="toggle-auth-mode">Créer un compte</p>
-        </div>
-    </div>
+            requestAnimationFrame(() => {
+                setTimeout(() => toast.classList.add('show'), 10);
+            });
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        };
 
-    <div id="toast-container" class="fixed bottom-6 left-1/2 transform -translate-x-1/2 z-[200] flex flex-col gap-3 pointer-events-none w-[90%] sm:w-auto"></div>
+        // --- التنقل ---
+        window.showSection = (sectionId) => {
+            document.querySelectorAll('.spa-section').forEach(sec => sec.classList.add('hidden-section'));
+            document.getElementById(sectionId).classList.remove('hidden-section');
+            if (sectionId === 'storefront-section') loadAllProducts();
+            if (sectionId === 'dashboard-section' && currentUser) {
+                loadMerchantProducts();
+                loadMerchantOrders();
+            }
+            if (sectionId === 'cart-section') updateCartUI();
+        };
 
-    <script type="module" src="app.js"></script>
+        // --- المصادقة ---
+        onAuthStateChanged(auth, (user) => {
+            currentUser = user;
+            if (user) {
+                document.getElementById('nav-dashboard').classList.remove('hidden');
+                document.getElementById('nav-logout').classList.remove('hidden');
+                document.getElementById('nav-login').classList.add('hidden');
+                showSection('dashboard-section');
+            } else {
+                document.getElementById('nav-dashboard').classList.add('hidden');
+                document.getElementById('nav-logout').classList.add('hidden');
+                document.getElementById('nav-login').classList.remove('hidden');
+                showSection('storefront-section');
+            }
+        });
+
+        // تسجيل الدخول العادي
+        document.getElementById('toggle-auth-mode').addEventListener('click', () => {
+            isLoginMode = !isLoginMode;
+            document.getElementById('auth-title').innerText = isLoginMode ? 'بوابة التجار' : 'حساب تاجر جديد';
+            document.getElementById('auth-submit').innerText = isLoginMode ? 'دخول' : 'إنشاء حساب';
+            document.getElementById('toggle-auth-mode').innerText = isLoginMode ? 'ليس لديك حساب؟ سجل كتاجر جديد' : 'لديك حساب؟ سجل دخولك';
+        });
+
+        document.getElementById('auth-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('auth-email').value;
+            const password = document.getElementById('auth-password').value;
+            const btn = document.getElementById('auth-submit');
+            btn.innerText = 'جاري المعالجة...';
+
+            try {
+                if (isLoginMode) {
+                    await signInWithEmailAndPassword(auth, email, password);
+                    showToast('تم تسجيل الدخول بنجاح');
+                } else {
+                    await createUserWithEmailAndPassword(auth, email, password);
+                    showToast('تم إنشاء حسابك بنجاح');
+                }
+                e.target.reset();
+            } catch (error) {
+                showToast('خطأ: ' + error.message, 'error');
+            } finally {
+                btn.innerText = isLoginMode ? 'دخول' : 'إنشاء حساب';
+            }
+        });
+
+        // تسجيل الدخول بجوجل (ميزة جديدة)
+        document.getElementById('google-auth-btn').addEventListener('click', async () => {
+            try {
+                await signInWithPopup(auth, googleProvider);
+                showToast('تم تسجيل الدخول بواسطة Google بنجاح');
+            } catch (error) {
+                showToast('خطأ في مصادقة جوجل: ' + error.message, 'error');
+            }
+        });
+
+        document.getElementById('logout-btn').addEventListener('click', async () => {
+            await signOut(auth);
+            showToast('تم تسجيل الخروج', 'info');
+        });
+
+        // --- إدارة المنتجات (التاجر) ---
+        document.getElementById('add-product-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('add-btn-spinner');
+            btn.innerText = 'جاري...';
+            try {
+                await addDoc(collection(db, "products"), {
+                    name: document.getElementById('prod-name').value,
+                    category: document.getElementById('prod-category').value,
+                    description: document.getElementById('prod-desc').value,
+                    price: parseFloat(document.getElementById('prod-price').value),
+                    imageUrl: document.getElementById('prod-image').value,
+                    merchantId: currentUser.uid,
+                    createdAt: serverTimestamp()
+                });
+                showToast('تمت إضافة المنتج بنجاح');
+                e.target.reset();
+                loadMerchantProducts();
+            } catch (error) {
+                showToast('فشل الإضافة: ' + error.message, 'error');
+            } finally {
+                btn.innerText = 'إضافة المنتج';
+            }
+        });
+
+        async function loadMerchantProducts() {
+            const listEl = document.getElementById('merchant-products-list');
+            listEl.innerHTML = '<p class="text-white/50 py-4 text-center">جاري التحميل...</p>';
+            try {
+                const q = query(collection(db, "products"), where("merchantId", "==", currentUser.uid));
+                const snap = await getDocs(q);
+                listEl.innerHTML = snap.empty ? '<p class="text-white/50 py-4 text-center">لا توجد منتجات.</p>' : '';
+                snap.forEach((docSnap) => {
+                    const data = docSnap.data();
+                    const li = document.createElement('li');
+                    li.className = 'py-4 flex justify-between items-center group';
+                    li.innerHTML = `
+                        <div class="flex items-center gap-4">
+                            <img src="${data.imageUrl}" class="w-12 h-12 object-cover rounded-xl border border-white/20">
+                            <div>
+                                <p class="font-bold text-white text-md">${data.name}</p>
+                                <p class="text-xs text-purple-300 font-medium mt-1">${data.price} $ • ${data.category}</p>
+                            </div>
+                        </div>
+                        <div class="flex gap-2">
+                            <button onclick="openEditModal('${docSnap.id}', '${data.name}', '${data.description}', ${data.price}, '${data.imageUrl}', '${data.category}')" class="glass-btn px-3 py-1.5 rounded-lg text-sm text-blue-300">تعديل</button>
+                            <button onclick="deleteProduct('${docSnap.id}')" class="glass-btn px-3 py-1.5 rounded-lg text-sm text-red-300">حذف</button>
+                        </div>
+                    `;
+                    listEl.appendChild(li);
+                });
+            } catch (error) { showToast('خطأ في تحميل المنتجات', 'error'); }
+        }
+
+        window.deleteProduct = async (id) => {
+            if(confirm('هل أنت متأكد من الحذف؟')) {
+                try {
+                    await deleteDoc(doc(db, "products", id));
+                    showToast('تم حذف المنتج');
+                    loadMerchantProducts();
+                } catch (error) { showToast('خطأ أثناء الحذف', 'error'); }
+            }
+        };
+
+        // Modal التعديل
+        window.openEditModal = (id, name, desc, price, img, category) => {
+            document.getElementById('edit-prod-id').value = id;
+            document.getElementById('edit-prod-name').value = name;
+            document.getElementById('edit-prod-desc').value = desc;
+            document.getElementById('edit-prod-price').value = price;
+            document.getElementById('edit-prod-image').value = img;
+            document.getElementById('edit-prod-category').value = category || 'أخرى';
+            document.getElementById('edit-modal').classList.remove('hidden-section');
+        };
+
+        window.closeEditModal = () => document.getElementById('edit-modal').classList.add('hidden-section');
+
+        document.getElementById('edit-product-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            try {
+                await updateDoc(doc(db, "products", document.getElementById('edit-prod-id').value), {
+                    name: document.getElementById('edit-prod-name').value,
+                    description: document.getElementById('edit-prod-desc').value,
+                    price: parseFloat(document.getElementById('edit-prod-price').value),
+                    category: document.getElementById('edit-prod-category').value,
+                    imageUrl: document.getElementById('edit-prod-image').value
+                });
+                showToast('تم تحديث المنتج');
+                closeEditModal();
+                loadMerchantProducts();
+                loadAllProducts(); 
+            } catch(error) { showToast('فشل التحديث', 'error'); }
+        });
+
+        // --- عرض المنتجات (Storefront) ---
+        async function loadAllProducts() {
+            const gridEl = document.getElementById('products-grid');
+            gridEl.innerHTML = '<div class="col-span-full flex justify-center py-20"><div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-purple-500"></div></div>';
+            try {
+                const snap = await getDocs(collection(db, "products"));
+                allProductsCache = []; 
+                snap.forEach(doc => allProductsCache.push({ id: doc.id, ...doc.data() }));
+                applyFilters(); // تطبيق الفلاتر والترتيب
+            } catch (error) { gridEl.innerHTML = '<p class="text-red-400 text-center col-span-full py-10">فشل في تحميل المتجر.</p>'; }
+        }
+
+        function renderProducts(products) {
+            const gridEl = document.getElementById('products-grid');
+            gridEl.innerHTML = '';
+            if(products.length === 0) {
+                gridEl.innerHTML = '<div class="col-span-full text-center py-20 text-white/50 text-xl font-bold">لا توجد منتجات تطابق بحثك.</div>';
+                return;
+            }
+            products.forEach(data => {
+                const isWished = wishlist.includes(data.id);
+                const div = document.createElement('div');
+                div.className = 'glass rounded-3xl overflow-hidden flex flex-col group relative transition-all duration-500 hover:shadow-[0_0_30px_rgba(168,85,247,0.3)] hover:-translate-y-2';
+                div.innerHTML = `
+                    <div class="relative overflow-hidden h-64">
+                        <img src="${data.imageUrl}" alt="${data.name}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent opacity-60"></div>
+                        <span class="absolute top-4 right-4 glass px-3 py-1 rounded-full text-white text-xs font-bold">${data.category}</span>
+                        
+                        <button onclick="toggleWishlist('${data.id}', this)" class="absolute top-4 left-4 glass p-2 rounded-full text-white hover:bg-white/20 transition z-10">
+                            <svg class="w-5 h-5 ${isWished ? 'heart-active' : ''}" fill="${isWished ? 'currentColor' : 'none'}" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
+                        </button>
+                    </div>
+                    <div class="p-6 flex-grow flex flex-col justify-between relative z-10">
+                        <div>
+                            <h3 class="font-bold text-xl text-white mb-2 leading-tight">${data.name}</h3>
+                            <p class="text-sm text-indigo-200 mb-4 line-clamp-2">${data.description}</p>
+                        </div>
+                        <div class="flex justify-between items-center mt-2">
+                            <span class="text-transparent bg-clip-text bg-gradient-to-r from-purple-300 to-indigo-300 font-black text-2xl">${data.price} $</span>
+                            <button onclick="addToCart('${data.id}', '${data.name}', ${data.price}, '${data.merchantId}')" class="glass-btn-primary px-5 py-2.5 rounded-xl font-bold text-white text-sm">
+                                أضف للسلة
+                            </button>
+                        </div>
+                    </div>
+                `;
+                gridEl.appendChild(div);
+            });
+        }
+
+        // --- الميزات المتقدمة: الفلترة والترتيب والمفضلة ---
+        window.toggleWishlist = (id, btnElement) => {
+            const index = wishlist.indexOf(id);
+            const svg = btnElement.querySelector('svg');
+            if(index > -1) {
+                wishlist.splice(index, 1);
+                svg.classList.remove('heart-active');
+                svg.setAttribute('fill', 'none');
+                showToast('تمت الإزالة من المفضلة', 'info');
+            } else {
+                wishlist.push(id);
+                svg.classList.add('heart-active');
+                svg.setAttribute('fill', 'currentColor');
+                showToast('تمت الإضافة للمفضلة');
+            }
+            localStorage.setItem('wishlist', JSON.stringify(wishlist));
+        };
+
+        const applyFilters = () => {
+            const term = document.getElementById('search-input').value.toLowerCase();
+            const category = document.getElementById('category-filter').value;
+            const sort = document.getElementById('sort-filter').value;
+
+            let filtered = allProductsCache.filter(prod => {
+                const matchName = prod.name.toLowerCase().includes(term);
+                const matchCat = category === 'الكل' || prod.category === category;
+                return matchName && matchCat;
+            });
+
+            if (sort === 'price-asc') filtered.sort((a, b) => a.price - b.price);
+            if (sort === 'price-desc') filtered.sort((a, b) => b.price - a.price);
+
+            renderProducts(filtered);
+        };
+
+        document.getElementById('search-input').addEventListener('input', applyFilters);
+        document.getElementById('category-filter').addEventListener('change', applyFilters);
+        document.getElementById('sort-filter').addEventListener('change', applyFilters); // تشغيل الترتيب
+
+
+        // --- إدارة السلة ---
+        window.addToCart = (id, name, price, merchantId) => {
+            cart.push({ id, name, price, merchantId });
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCartUI();
+            showToast(`تم إضافة ${name} إلى سلتك`);
+        };
+
+        function updateCartUI() {
+            document.getElementById('cart-count').innerText = cart.length;
+            const itemsEl = document.getElementById('cart-items');
+            itemsEl.innerHTML = '';
+            let total = 0;
+
+            if (cart.length === 0) {
+                itemsEl.innerHTML = '<div class="text-center py-12 text-white/50"><svg class="w-20 h-20 mx-auto mb-4 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path></svg><p class="text-xl">سلتك فارغة تماماً</p></div>';
+            } else {
+                cart.forEach((item, index) => {
+                    total += item.price;
+                    const div = document.createElement('div');
+                    div.className = 'py-5 flex justify-between items-center';
+                    div.innerHTML = `
+                        <div><p class="font-bold text-lg text-white">${item.name}</p></div>
+                        <div class="flex items-center gap-6">
+                            <span class="font-black text-purple-300 text-xl">${item.price} $</span>
+                            <button onclick="removeFromCart(${index})" class="glass p-2.5 rounded-full text-red-400 hover:bg-red-500/20 transition"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></button>
+                        </div>
+                    `;
+                    itemsEl.appendChild(div);
+                });
+            }
+            document.getElementById('cart-total').innerText = total.toFixed(2);
+        }
+
+        window.removeFromCart = (index) => {
+            cart.splice(index, 1);
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCartUI();
+        };
+
+        // إتمام الطلب
+        document.getElementById('checkout-btn').addEventListener('click', async () => {
+            if (cart.length === 0) return showToast('السلة فارغة', 'error');
+            const buyerName = prompt('الرجاء إدخال اسمك للتوصيل (نسخة تجريبية):');
+            if (!buyerName) return;
+            const btn = document.getElementById('checkout-btn');
+            btn.innerText = 'جاري التأكيد...';
+            btn.disabled = true;
+            try {
+                for (const item of cart) {
+                    await addDoc(collection(db, "orders"), {
+                        buyerName: buyerName, productName: item.name, price: item.price,
+                        merchantId: item.merchantId, status: 'قيد المعالجة',
+                        createdAt: serverTimestamp(), orderDate: new Date().toLocaleDateString('ar-EG')
+                    });
+                }
+                showToast('تم استلام طلبك بنجاح! شكراً لك.');
+                cart = []; localStorage.setItem('cart', JSON.stringify(cart));
+                updateCartUI(); showSection('storefront-section');
+            } catch (error) { showToast('خطأ أثناء إتمام الطلب', 'error');
+            } finally { btn.innerText = 'إتمام الطلب الآن'; btn.disabled = false; }
+        });
+
+        // --- إدارة الطلبات ---
+        async function loadMerchantOrders() {
+            const tbody = document.getElementById('merchant-orders-list');
+            tbody.innerHTML = '<tr><td colspan="5" class="p-6 text-center text-white/50">جاري تحميل الطلبات...</td></tr>';
+            try {
+                const q = query(collection(db, "orders"), where("merchantId", "==", currentUser.uid));
+                const snap = await getDocs(q);
+                tbody.innerHTML = snap.empty ? '<tr><td colspan="5" class="p-6 text-center text-white/50">لا توجد طلبات واردة حالياً.</td></tr>' : '';
+                snap.forEach((docSnap) => {
+                    const data = docSnap.data();
+                    const statusStyles = {
+                        'قيد المعالجة': 'bg-yellow-500/20 text-yellow-300 border-yellow-500/30',
+                        'تم الشحن': 'bg-blue-500/20 text-blue-300 border-blue-500/30',
+                        'مكتمل': 'bg-green-500/20 text-green-300 border-green-500/30'
+                    };
+                    const styling = statusStyles[data.status] || 'bg-white/10 text-white border-white/20';
+
+                    const tr = document.createElement('tr');
+                    tr.className = 'border-b border-white/5 hover:bg-white/5 transition-colors';
+                    tr.innerHTML = `
+                        <td class="p-4"><p class="font-bold text-white">${data.buyerName}</p><p class="text-xs text-white/40 font-mono mt-1">ID: ${docSnap.id.substring(0,6)}</p></td>
+                        <td class="p-4 text-indigo-200 font-medium">${data.productName}</td>
+                        <td class="p-4 text-purple-300 font-bold">${data.price} $</td>
+                        <td class="p-4 text-white/60 text-sm">${data.orderDate}</td>
+                        <td class="p-4">
+                            <select onchange="updateOrderStatus('${docSnap.id}', this.value)" class="text-sm border rounded-lg px-3 py-1.5 outline-none font-medium backdrop-blur-md ${styling}">
+                                <option value="قيد المعالجة" ${data.status === 'قيد المعالجة' ? 'selected' : ''}>قيد المعالجة</option>
+                                <option value="تم الشحن" ${data.status === 'تم الشحن' ? 'selected' : ''}>تم الشحن</option>
+                                <option value="مكتمل" ${data.status === 'مكتمل' ? 'selected' : ''}>مكتمل</option>
+                            </select>
+                        </td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            } catch (error) { tbody.innerHTML = '<tr><td colspan="5" class="p-6 text-center text-red-400">حدث خطأ في تحميل الطلبات.</td></tr>'; }
+        }
+
+        window.updateOrderStatus = async (orderId, newStatus) => {
+            try {
+                await updateDoc(doc(db, "orders", orderId), { status: newStatus });
+                showToast(`تم التحديث لـ: ${newStatus}`, 'info');
+                loadMerchantOrders(); 
+            } catch (error) { showToast('خطأ في التحديث', 'error'); }
+        };
+
+        // التهيئة الأولية
+        updateCartUI(); 
+        loadAllProducts();
+
+    </script>
 </body>
 </html>
